@@ -1,0 +1,52 @@
+@{
+    ViewData["Title"] = "Home Page";
+    @model List<FileDateGroupedModel>;
+
+}
+<div class="panel panel-default pre-scrollable">
+
+    <div id="accordion">
+        @{
+            if (Model != null)
+            {
+                int index = 0;
+                @foreach (var group in Model)
+                {
+                    var labelId = "collapseLabel_" + index++;
+                    var collapseId = "collapse_" + index++;
+                    var collapseTarget = "#" + collapseId;
+
+                    <div class="card mt-2">
+                        <div class="card-header" id="@labelId">
+                            <h3 class="mb-0">
+                                <button class="btn btn-link btn-lg" data-bs-toggle="collapse" data-bs-target="@collapseTarget" aria-expanded="true" aria-controls="@collapseId">
+                                    @group.DateGroupFormat
+                                </button>
+                            </h3>
+                        </div>
+
+                        <div id="@collapseId" class="collapse" aria-labelledby="@labelId" data-bs-parent="#accordion">
+                            <div class="card-body">
+                                @foreach (var item in group.Files)
+                                {
+                                    <p class="card-text ps-4">
+                                        <a href="@item.DownloadUrl">@item.Name <br /> </a>
+                                        <small class="text-muted">@item.CreatedAt</small>
+
+                                    </p>
+
+                                    <hr>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <h1 class="text-danger">Error.</h1>
+                <h4 class="text-danger">@ViewData["Error"].</h4>   
+            }
+        }
+    </div>
+</div>
